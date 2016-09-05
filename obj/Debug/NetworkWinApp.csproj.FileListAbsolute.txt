@@ -1,0 +1,10 @@
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\NetworkWinApp.exe
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\NetworkWinApp.pdb
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.Form1.resources
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.Properties.Resources.resources
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.csproj.GenerateResource.Cache
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.exe
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.pdb
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.csprojResolveAssemblyReference.cache
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.dll
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.xml
