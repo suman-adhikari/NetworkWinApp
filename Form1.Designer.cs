@@ -33,13 +33,17 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgt = new System.Windows.Forms.DataGridView();
-            this.pcAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pcPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.serverAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.serverPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Add = new System.Windows.Forms.Button();
             this.Save = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.serverName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.accessType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pcAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pcPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.firewallPermission = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serverAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serverPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgt)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,8 +63,11 @@
             this.dgt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgt.ColumnHeadersHeight = 30;
             this.dgt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.serverName,
+            this.accessType,
             this.pcAddress,
             this.pcPort,
+            this.firewallPermission,
             this.serverAddress,
             this.serverPort});
             this.dgt.Cursor = System.Windows.Forms.Cursors.Arrow;
@@ -85,29 +92,9 @@
             this.dgt.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgt.RowTemplate.Height = 30;
             this.dgt.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgt.Size = new System.Drawing.Size(753, 288);
+            this.dgt.Size = new System.Drawing.Size(1097, 288);
             this.dgt.TabIndex = 3;
-            
-            // 
-            // pcAddress
-            // 
-            this.pcAddress.HeaderText = "PC Address";
-            this.pcAddress.Name = "pcAddress";
-            // 
-            // pcPort
-            // 
-            this.pcPort.HeaderText = "PC Port";
-            this.pcPort.Name = "pcPort";
-            // 
-            // serverAddress
-            // 
-            this.serverAddress.HeaderText = "Server Address";
-            this.serverAddress.Name = "serverAddress";
-            // 
-            // serverPort
-            // 
-            this.serverPort.HeaderText = "Server Port";
-            this.serverPort.Name = "serverPort";
+            this.dgt.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgt_DefaultValuesNeeded);
             // 
             // Add
             // 
@@ -115,7 +102,7 @@
             this.Add.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Add.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Add.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Add.Location = new System.Drawing.Point(721, 60);
+            this.Add.Location = new System.Drawing.Point(1065, 60);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(75, 32);
             this.Add.TabIndex = 8;
@@ -129,7 +116,7 @@
             this.Save.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Save.Font = new System.Drawing.Font("Consolas", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Save.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Save.Location = new System.Drawing.Point(721, 392);
+            this.Save.Location = new System.Drawing.Point(1065, 393);
             this.Save.Margin = new System.Windows.Forms.Padding(4);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 32);
@@ -148,11 +135,61 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Windows Port Forwarder";
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.Location = new System.Drawing.Point(351, 60);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(113, 32);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Set Current IP";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // serverName
+            // 
+            this.serverName.HeaderText = "Server Name";
+            this.serverName.Name = "serverName";
+            // 
+            // accessType
+            // 
+            this.accessType.HeaderText = "Access Type";
+            this.accessType.Name = "accessType";
+            // 
+            // pcAddress
+            // 
+            this.pcAddress.HeaderText = "PC Address";
+            this.pcAddress.Name = "pcAddress";
+            // 
+            // pcPort
+            // 
+            this.pcPort.HeaderText = "PC Port";
+            this.pcPort.Name = "pcPort";
+            // 
+            // firewallPermission
+            // 
+            this.firewallPermission.HeaderText = "Firewall Permission";
+            this.firewallPermission.Name = "firewallPermission";
+            this.firewallPermission.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // serverAddress
+            // 
+            this.serverAddress.HeaderText = "Server Address";
+            this.serverAddress.Name = "serverAddress";
+            // 
+            // serverPort
+            // 
+            this.serverPort.HeaderText = "Server Port";
+            this.serverPort.Name = "serverPort";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(855, 450);
+            this.ClientSize = new System.Drawing.Size(1152, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Save);
             this.Controls.Add(this.Add);
@@ -171,11 +208,15 @@
         private System.Windows.Forms.DataGridView dgt;
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.Button Save;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn serverName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn accessType;
         private System.Windows.Forms.DataGridViewTextBoxColumn pcAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn pcPort;
+        private System.Windows.Forms.DataGridViewTextBoxColumn firewallPermission;
         private System.Windows.Forms.DataGridViewTextBoxColumn serverAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn serverPort;
-        private System.Windows.Forms.Label label2;
 
     }
 }
