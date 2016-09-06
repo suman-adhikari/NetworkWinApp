@@ -20,8 +20,7 @@ namespace NetworkWinApp
         public Form1()
         {
             InitializeComponent();
-            ShowData();
-            
+            ShowData();            
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -34,9 +33,6 @@ namespace NetworkWinApp
             g.DrawLine(myPen, 43, 55, 795, 55);
            
         }
-      
-     
-
         private void SaveData(string output)
         {
             address.Clear();
@@ -55,20 +51,15 @@ namespace NetworkWinApp
                 {
                     Regex r = new Regex(@"\s+");
                     addr = r.Replace(array[i].Replace("\n", ""), @" ").Split(' ');
-
-
                     netAddress.PcAddress = addr[0];
                     netAddress.PcPort = addr[1];
                     netAddress.ServerAddress = addr[2];
                     netAddress.ServerPort = addr[3];
-
                     address.Add(netAddress);
                 }
                 
             }
-
             SaveAddress(address);
-
         }
 
 
@@ -82,8 +73,7 @@ namespace NetworkWinApp
             dgt.Rows.Clear();
             for (int row = 0; row < abc1.Count; row++)
             {
-            
-               
+                          
                 dgt.Rows.Add();
                 dgt.Rows[row].Cells["pcAddress"].Value = abc1[row].PcAddress;
                 dgt.Rows[row].Cells["pcPort"].Value = abc1[row].PcPort; 
