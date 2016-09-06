@@ -29,14 +29,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgt = new System.Windows.Forms.DataGridView();
-            this.Add = new System.Windows.Forms.Button();
-            this.Save = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.serverName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.accessType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pcAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,6 +40,10 @@
             this.firewallPermission = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serverAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serverPort = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Add = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnCurrentIp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgt)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,14 +53,14 @@
             this.dgt.AllowUserToDeleteRows = false;
             this.dgt.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgt.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgt.ColumnHeadersHeight = 30;
             this.dgt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.serverName,
@@ -71,30 +71,66 @@
             this.serverAddress,
             this.serverPort});
             this.dgt.Cursor = System.Windows.Forms.Cursors.Arrow;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgt.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgt.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgt.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgt.Location = new System.Drawing.Point(43, 98);
             this.dgt.Name = "dgt";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgt.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgt.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgt.RowTemplate.Height = 30;
             this.dgt.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgt.Size = new System.Drawing.Size(1097, 288);
             this.dgt.TabIndex = 3;
             this.dgt.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgt_DefaultValuesNeeded);
+            // 
+            // serverName
+            // 
+            this.serverName.HeaderText = "Server Name";
+            this.serverName.Name = "serverName";
+            // 
+            // accessType
+            // 
+            this.accessType.HeaderText = "Access Type";
+            this.accessType.Name = "accessType";
+            // 
+            // pcAddress
+            // 
+            this.pcAddress.HeaderText = "PC Address";
+            this.pcAddress.Name = "pcAddress";
+            // 
+            // pcPort
+            // 
+            this.pcPort.HeaderText = "PC Port";
+            this.pcPort.Name = "pcPort";
+            // 
+            // firewallPermission
+            // 
+            this.firewallPermission.HeaderText = "Firewall Permission";
+            this.firewallPermission.Name = "firewallPermission";
+            this.firewallPermission.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // serverAddress
+            // 
+            this.serverAddress.HeaderText = "Server Address";
+            this.serverAddress.Name = "serverAddress";
+            // 
+            // serverPort
+            // 
+            this.serverPort.HeaderText = "Server Port";
+            this.serverPort.Name = "serverPort";
             // 
             // Add
             // 
@@ -135,61 +171,26 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Windows Port Forwarder";
             // 
-            // button1
+            // btnCurrentIp
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.Location = new System.Drawing.Point(351, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(113, 32);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Set Current IP";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // serverName
-            // 
-            this.serverName.HeaderText = "Server Name";
-            this.serverName.Name = "serverName";
-            // 
-            // accessType
-            // 
-            this.accessType.HeaderText = "Access Type";
-            this.accessType.Name = "accessType";
-            // 
-            // pcAddress
-            // 
-            this.pcAddress.HeaderText = "PC Address";
-            this.pcAddress.Name = "pcAddress";
-            // 
-            // pcPort
-            // 
-            this.pcPort.HeaderText = "PC Port";
-            this.pcPort.Name = "pcPort";
-            // 
-            // firewallPermission
-            // 
-            this.firewallPermission.HeaderText = "Firewall Permission";
-            this.firewallPermission.Name = "firewallPermission";
-            this.firewallPermission.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // serverAddress
-            // 
-            this.serverAddress.HeaderText = "Server Address";
-            this.serverAddress.Name = "serverAddress";
-            // 
-            // serverPort
-            // 
-            this.serverPort.HeaderText = "Server Port";
-            this.serverPort.Name = "serverPort";
+            this.btnCurrentIp.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.btnCurrentIp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCurrentIp.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCurrentIp.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnCurrentIp.Location = new System.Drawing.Point(351, 60);
+            this.btnCurrentIp.Name = "btnCurrentIp";
+            this.btnCurrentIp.Size = new System.Drawing.Size(113, 32);
+            this.btnCurrentIp.TabIndex = 12;
+            this.btnCurrentIp.Text = "Set Current IP";
+            this.btnCurrentIp.UseVisualStyleBackColor = false;
+            this.btnCurrentIp.Click += new System.EventHandler(this.btnCurrentIp_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1152, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCurrentIp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Save);
             this.Controls.Add(this.Add);
@@ -209,7 +210,7 @@
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.Button Save;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCurrentIp;
         private System.Windows.Forms.DataGridViewTextBoxColumn serverName;
         private System.Windows.Forms.DataGridViewTextBoxColumn accessType;
         private System.Windows.Forms.DataGridViewTextBoxColumn pcAddress;

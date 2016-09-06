@@ -2,32 +2,36 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using NetworkWinApp.Properties;
 using Newtonsoft.Json;
-using System.IO;
-using System.Net.Mime;
-using System.Reflection;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace NetworkWinApp
 {
     public partial class Form1 : Form
     {
-        List<NetAddress> address = new List<NetAddress>();
+        private List<NetAddress> address = new List<NetAddress>();
         private bool _noBtn = true;
         private int _rowCount;
         private bool _delete;
-        readonly List<int> _deleteIndex = new List<int>();
+        private readonly List<int> _deleteIndex = new List<int>();
         private string oldData;
+
         public Form1()
         {
             InitializeComponent();
-            //ShowData();
+            
+            
             ReadFromFile("old");
+            ShowData();
         }
+
+        
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -37,8 +41,9 @@ namespace NetworkWinApp
             Pen myPen = new Pen(Color.Gray);
             myPen.Width = 1;
             g.DrawLine(myPen, 43, 55, 1140, 55);
-           
+
         }
+
         private void SaveData(string output)
         {
             if (output.Length > 260)
@@ -68,9 +73,32 @@ namespace NetworkWinApp
 
                 }
             }
-            SaveAddress(address);
+            //SaveAddress(address);
+            CheckDataWithFile(address);
         }
 
+        private void CheckDataWithFile(List<NetAddress> netAddresses)
+        {
+            var _oldData = JsonConvert.DeserializeObject<List<NetAddress>>(oldData);
+            var realData = netAddresses;
+            List<NetAddress> newlist = new List<NetAddress>();
+            int count = 0;
+                foreach (var old in _oldData)
+                {
+                    foreach (var real in realData)
+                    {
+                        if (old.PcAddress == real.PcAddress && old.PcPort == real.PcPort)
+                        {
+                            //var address = new NetAddress(old.ServerName,old.AccessType,old.PcAddress,old.PcPort,old.FirewallPermission,old.ServerAddress,old.ServerPort);
+
+                            newlist.Add(old);
+
+                        }
+                    }
+ 
+                }
+
+        }
 
 
         public void SaveAddress(List<NetAddress> netAddress)
@@ -82,14 +110,14 @@ namespace NetworkWinApp
             dgt.Rows.Clear();
             for (int row = 0; row < abc1.Count; row++)
             {
-                          
+
                 dgt.Rows.Add();
                 dgt.Rows[row].Cells["pcAddress"].Value = abc1[row].PcAddress;
-                dgt.Rows[row].Cells["pcPort"].Value = abc1[row].PcPort; 
+                dgt.Rows[row].Cells["pcPort"].Value = abc1[row].PcPort;
                 dgt.Rows[row].Cells["serverAddress"].Value = abc1[row].ServerAddress;
                 dgt.Rows[row].Cells["serverPort"].Value = abc1[row].ServerPort;
 
-                
+
             }
             if (_noBtn)
             {
@@ -103,38 +131,38 @@ namespace NetworkWinApp
                 btn.DefaultCellStyle.ForeColor = Color.White;
                 btn.DefaultCellStyle.BackColor = Color.Crimson;
                 btn.DefaultCellStyle.Font = new Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-               
+
                 //btn.DefaultCellStyle.
                 btn.UseColumnTextForButtonValue = true;
-              
+
                 //dgt.Columns.Add(btn);
 
                 dgt.CellClick += dataGridView1_CellClick;
                 _noBtn = false;
             }
             _rowCount = dgt.Rows.Count;
-           // dgt.ColumnHeadersHeight
-           // dgt.CurrentCell.Selected=false;
+            // dgt.ColumnHeadersHeight
+            // dgt.CurrentCell.Selected=false;
 
 
         }
 
-        void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
             var col = e.ColumnIndex;
-           if (dgt.CurrentCell.ColumnIndex.Equals(7) && e.RowIndex != -1)
-           {           
+            if (dgt.CurrentCell.ColumnIndex.Equals(7) && e.RowIndex != -1)
+            {
                 var row = e.RowIndex;
-               _deleteIndex.Add(row);
-               dgt.Rows[row].Visible = false;
-               //dgt.Rows.RemoveAt(row);
-               _delete = true; 
-           }
+                _deleteIndex.Add(row);
+                dgt.Rows[row].Visible = false;
+                //dgt.Rows.RemoveAt(row);
+                _delete = true;
+            }
 
-           if (col != 7 && col != -1)
-               dgt.BeginEdit(true);
-           
+            if (col != 7 && col != -1)
+                dgt.BeginEdit(true);
+
         }
 
 
@@ -158,7 +186,7 @@ namespace NetworkWinApp
             }
         }
 
-        private void NetshCommand(List<NetAddress> netAddress, string action, int[] deletelist =null)
+        private void NetshCommand(List<NetAddress> netAddress, string action, int[] deletelist = null)
         {
             // ReSharper disable once InconsistentNaming
             foreach (var _netAddress in netAddress)
@@ -167,7 +195,8 @@ namespace NetworkWinApp
                 string cmd = @"netsh interface portproxy show all";
                 if (action == "delete")
                 {
-                    cmd = @"netsh interface portproxy delete v4tov4 listenport=" + _netAddress.PcPort + " listenaddress=" +
+                    cmd = @"netsh interface portproxy delete v4tov4 listenport=" + _netAddress.PcPort +
+                          " listenaddress=" +
                           _netAddress.PcAddress;
                 }
                 if (action == "add")
@@ -175,36 +204,36 @@ namespace NetworkWinApp
                     cmd = @"netsh interface portproxy add v4tov4 listenport=" + _netAddress.PcPort + " listenaddress=" +
                           _netAddress.PcAddress + " connectport=" + _netAddress.ServerPort + " connectaddress=" +
                           _netAddress.ServerAddress;
-                    
+
                 }
 
-                ProcessStartInfo si = new ProcessStartInfo("cmd.exe");                
+                ProcessStartInfo si = new ProcessStartInfo("cmd.exe");
                 si.RedirectStandardInput = true;
                 si.RedirectStandardOutput = true;
-                si.UseShellExecute = false;              
+                si.UseShellExecute = false;
                 Process p = Process.Start(si);
                 if (p != null)
                 {
-                    p.StandardInput.WriteLine(cmd);               
-                    p.StandardInput.WriteLine(@"exit");              
+                    p.StandardInput.WriteLine(cmd);
+                    p.StandardInput.WriteLine(@"exit");
                     p.Close();
                 }
                 //ShowData();
-                
+
             }
-            if (action=="add")
-             SaveToFile(netAddress);
+            if (action == "add")
+                SaveToFile(netAddress);
             else
             {
                 DeleteFromFile(netAddress, deletelist);
             }
         }
 
-        private void DeleteFromFile(List<NetAddress> netAddress,int[] arr)
+        private void DeleteFromFile(List<NetAddress> netAddress, int[] arr)
         {
-            var _oldData = JsonConvert.DeserializeObject<List<NetAddress>>(oldData);          
+            var _oldData = JsonConvert.DeserializeObject<List<NetAddress>>(oldData);
             int count = _oldData.Count;
-            for (int row = count-1; row >= 0; row--)
+            for (int row = count - 1; row >= 0; row--)
             {
 
                 if (arr.Contains(row))
@@ -215,13 +244,14 @@ namespace NetworkWinApp
             SaveToFile(_oldData, "saveonly");
         }
 
-        private void SaveToFile(List<NetAddress> netAddress, string saveonly=null)
+        private void SaveToFile(List<NetAddress> netAddress, string saveonly = null)
         {
             string serializeData = JsonConvert.SerializeObject(netAddress);
             string currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string archiveFolder = Path.Combine(currentDirectory, "PortForward.txt");
             StreamWriter writer = new StreamWriter(archiveFolder);
-            writer.WriteLine(serializeData); //write the current date to the file. change this with your date or something.
+            writer.WriteLine(serializeData);
+                //write the current date to the file. change this with your date or something.
             writer.Close(); //remember to close the file again.
             writer.Dispose();
             //var abc1 = JsonConvert.DeserializeObject<List<NetAddress>>(serializeData);
@@ -235,11 +265,11 @@ namespace NetworkWinApp
             }
         }
 
-      
+
 
         private void ReadFromFile(string old = null)
         {
-            
+
             string currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string archiveFolder = Path.Combine(currentDirectory, "PortForward.txt");
             string[] data = File.ReadAllLines(archiveFolder);
@@ -252,20 +282,20 @@ namespace NetworkWinApp
                 }
             }
             else
-            {               
+            {
                 DisplayTable(data[0], oldData);
             }
 
-            
+
         }
 
-        private void DisplayTable(string data=null,string olddata=null)
+        private void DisplayTable(string data = null, string olddata = null)
         {
             List<NetAddress> alldata = new List<NetAddress>();
-            List<NetAddress>newData = null;
+            List<NetAddress> newData = null;
 
             var oldData = JsonConvert.DeserializeObject<List<NetAddress>>(olddata);
-            if(data != null)
+            if (data != null)
             {
                 newData = JsonConvert.DeserializeObject<List<NetAddress>>(data);
                 alldata = oldData.Concat(newData).ToList();
@@ -273,10 +303,10 @@ namespace NetworkWinApp
             }
             else
             {
-                alldata = oldData; 
+                alldata = oldData;
             }
-            
-           
+
+
             dgt.Rows.Clear();
             for (int row = 0; row < alldata.Count; row++)
             {
@@ -285,10 +315,10 @@ namespace NetworkWinApp
 
                 string currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 string archiveFolder = Path.Combine(currentDirectory, "1.png");
-               // if ((int.Parse(alldata[row].FirewallPermission) > 0))
-              //  {
-                    archiveFolder = Path.Combine(currentDirectory, "2.png");
-               // }
+                // if ((int.Parse(alldata[row].FirewallPermission) > 0))
+                //  {
+                archiveFolder = Path.Combine(currentDirectory, "2.png");
+                // }
 
 
                 dgt.Rows[row].Cells["serverName"].Value = alldata[row].ServerName;
@@ -302,7 +332,7 @@ namespace NetworkWinApp
 
                 if (_noBtn)
                 {
-                    
+
                     DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
                     dgt.Columns.Add(btn);
                     btn.HeaderText = Resources.Form1_SaveAddress_Action;
@@ -335,13 +365,13 @@ namespace NetworkWinApp
             dgt.Columns[4].ReadOnly = false;
             dgt.Columns[5].ReadOnly = false;
             dgt.Columns[6].ReadOnly = false;
-            
+
 
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
-           // ReadFromFile();
+            // ReadFromFile();
             if (!_delete)
             {
                 int count = 0;
@@ -369,7 +399,7 @@ namespace NetworkWinApp
             }
             else
             {
-                
+
                 List<NetAddress> deleteList = new List<NetAddress>();
                 int[] arr = _deleteIndex.ToArray();
                 foreach (DataGridViewRow row in dgt.Rows)
@@ -377,11 +407,11 @@ namespace NetworkWinApp
                     NetAddress netAddress = new NetAddress();
                     if (arr.Contains(row.Index))
                     {
-                        
-                        netAddress.PcAddress = (string)row.Cells[2].Value;
-                        netAddress.PcPort = (string)row.Cells[3].Value;
+
+                        netAddress.PcAddress = (string) row.Cells[2].Value;
+                        netAddress.PcPort = (string) row.Cells[3].Value;
                         deleteList.Add(netAddress);
-                    }                    
+                    }
                 }
                 NetshCommand(deleteList, "delete", arr);
             }
@@ -389,20 +419,53 @@ namespace NetworkWinApp
 
         private void dgt_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
-            e.Row.Cells[4].Value = Properties.Resources.Image1;
+            e.Row.Cells[4].Value = Resources.Image1;
         }
-      
+
+        private void btnCurrentIp_Click(object sender, EventArgs e)
+        {
+            string ip = getIP();
+            foreach (DataGridViewRow row in dgt.Rows)
+            {
+                row.Cells[2].Value = ip;
+            }
+        }
+
+        public string getIP()
+        {
+            string host = Dns.GetHostName();
+            IPHostEntry ip = Dns.GetHostEntry(host);
+            return ip.AddressList[4].ToString();
+        }
+
+
     }
 
     public class NetAddress
     {
-        public string ServerName;
-        public string AccessType;
-        public string PcAddress;
-        public string PcPort;
-        public string FirewallPermission;
-        public string ServerAddress;
-        public string ServerPort;
+        public NetAddress(string serverName, string accessType, string pcAddress, string pcPort, string firewallPermission, string serverAddress, string serverPort)
+        {
+            ServerName = serverName;
+            AccessType = accessType;
+            PcAddress = pcAddress;
+            PcPort = pcPort;
+            FirewallPermission = firewallPermission;
+            ServerAddress = serverAddress;
+            ServerPort = serverPort;
+        }
+
+        public NetAddress()
+        {
+            
+        }
+
+        public string ServerName { get; set; }
+        public string AccessType { get; set; }
+        public string PcAddress { get; set; }
+        public string PcPort { get; set; }
+        public string FirewallPermission { get; set; }
+        public string ServerAddress { get; set; }
+        public string ServerPort { get; set; }
 
     }
 }
