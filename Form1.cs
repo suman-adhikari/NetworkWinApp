@@ -46,7 +46,7 @@ namespace NetworkWinApp
 
         private void SaveData(string output)
         {
-            if (output.Length > 260)
+            if (output.Length > 300)
             {
                 address.Clear();
                 int start = output.LastIndexOf("----------", StringComparison.Ordinal);
@@ -82,21 +82,35 @@ namespace NetworkWinApp
             var _oldData = JsonConvert.DeserializeObject<List<NetAddress>>(oldData);
             var realData = netAddresses;
             List<NetAddress> newlist = new List<NetAddress>();
-            int count = 0;
+            
                 foreach (var old in _oldData)
                 {
                     foreach (var real in realData)
                     {
-                        if (old.PcAddress == real.PcAddress && old.PcPort == real.PcPort)
+                        if (old.PcAddress == real.PcAddress && old.PcPort == real.PcPort && old.ServerAddress==real.ServerAddress && old.ServerPort==real.ServerPort)
                         {
-                            //var address = new NetAddress(old.ServerName,old.AccessType,old.PcAddress,old.PcPort,old.FirewallPermission,old.ServerAddress,old.ServerPort);
-
                             newlist.Add(old);
-
                         }
                     }
- 
                 }
+
+           // if(newlist.Contains(realData))
+            List<NetAddress> missing = new List<NetAddress>();
+           foreach (var item in realData)
+           {
+               int count = 0;
+               foreach (var innerItem in newlist)
+               {
+                   if (item.PcAddress != innerItem.PcAddress || item.PcPort != innerItem.PcPort || item.ServerAddress != innerItem.ServerAddress || item.ServerPort != innerItem.ServerPort)
+                   {
+                       count++;
+                       if (count == newlist.Count)
+                       {
+                           missing.Add(item);
+                       }
+                   }
+               }
+           }
 
         }
 
@@ -435,7 +449,7 @@ namespace NetworkWinApp
         {
             string host = Dns.GetHostName();
             IPHostEntry ip = Dns.GetHostEntry(host);
-            return ip.AddressList[4].ToString();
+            return ip.AddressList[2].ToString();
         }
 
 
