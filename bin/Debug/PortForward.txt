@@ -1,1 +1,1 @@
-[]
+[{"ServerName":null,"AccessType":null,"PcAddress":"192.168.1.14","PcPort":"5555","FirewallPermission":null,"ServerAddress":"10.23.23.23","ServerPort":"6666"}]

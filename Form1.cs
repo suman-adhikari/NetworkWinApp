@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using NetworkWinApp.Properties;
 using Newtonsoft.Json;
 
@@ -27,13 +28,15 @@ namespace NetworkWinApp
         {
             InitializeComponent();
 
-            FileStatus();
+            FileStatus();            
             ReadFromFile("old");
             ShowData();
+           
         }
 
         protected void FileStatus()
         {
+            
             List<NetAddress> dummy = new List<NetAddress>();
             NetAddress netAddress = new NetAddress();
             netAddress.PcAddress = "1";
@@ -123,8 +126,7 @@ namespace NetworkWinApp
                 {
                     foreach (var real in realData)
                     {
-                        if (old.PcAddress == real.PcAddress && old.PcPort == real.PcPort) newlist.Add(old);
-                        
+                        if (old.PcAddress == real.PcAddress && old.PcPort == real.PcPort) newlist.Add(old);                        
                     }
  
                 }
@@ -141,6 +143,10 @@ namespace NetworkWinApp
                             if (count == newlist.Count) missing.Add(item);
 
                         }
+                    }
+                    if (newlist.Count == 0 && realData.Count>0)
+                    {
+                        newlist.Add(item);
                     }
                 }
 
@@ -210,17 +216,99 @@ namespace NetworkWinApp
                 netAddress.PcPort = (string)dgt.Rows[row].Cells["pcPort"].Value;
                 netAddress.ServerAddress = (string)dgt.Rows[row].Cells["serverAddress"].Value;
                 netAddress.ServerPort = (string)dgt.Rows[row].Cells["serverPort"].Value;
-
                 dgt.Rows[row].Visible = false;
-                /* _deleteIndex.Add(row);
-                               
-                _delete = true;*/
+
+                deleteList.Add(netAddress);
+               
             }
-            deleteList.Add(netAddress);
+            else if (dgt.CurrentCell.ColumnIndex.Equals(4))
+            {                
+                var permission = dgt.Rows[e.RowIndex].Cells[4].Tag;
+
+                if (permission == "no")
+                {
+                    var confirmResult = MessageBox.Show(Resources.Form1_dataGridView1_CellClick_Are_you_sure_to_Add_Firewall_Permission___, Resources.Form1_dataGridView1_CellClick_Firewall_Permission__, MessageBoxButtons.YesNo);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        var row = e.RowIndex;
+                        netAddress.ServerName = (string) dgt.Rows[row].Cells["serverName"].Value;
+                        netAddress.PcAddress = (string) dgt.Rows[row].Cells["pcAddress"].Value;
+                        netAddress.PcPort = (string) dgt.Rows[row].Cells["pcPort"].Value;
+                        netAddress.ServerAddress = (string) dgt.Rows[row].Cells["serverAddress"].Value;
+                        netAddress.ServerPort = (string) dgt.Rows[row].Cells["serverPort"].Value;
+
+                        AddFirewallPermission(netAddress);
+                    }
+                }
+                else
+                {
+                    var confirmResult = MessageBox.Show(@"Are you sure you want to remove Firewall Permission??","Firewall Permission",MessageBoxButtons.YesNo);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        var row = e.RowIndex;
+                        netAddress.ServerName = (string)dgt.Rows[row].Cells["serverName"].Value;
+                        netAddress.PcAddress = (string)dgt.Rows[row].Cells["pcAddress"].Value;
+                        netAddress.PcPort = (string)dgt.Rows[row].Cells["pcPort"].Value;
+                        netAddress.ServerAddress = (string)dgt.Rows[row].Cells["serverAddress"].Value;
+                        netAddress.ServerPort = (string)dgt.Rows[row].Cells["serverPort"].Value;
+
+                        RemoveFirewallPermission(netAddress);
+                    }
+                }
+            }
+
+           
+            //deleteList.Clear();
 
             if (col != 7 && col != -1)
                 dgt.BeginEdit(true);
 
+        }
+
+
+        private void RemoveFirewallPermission(NetAddress netAddress )
+        {
+            ProcessStartInfo si = new ProcessStartInfo("cmd.exe");
+            // Redirect both streams so we can write/read them.
+            si.RedirectStandardInput = true;
+            si.RedirectStandardOutput = true;
+            si.UseShellExecute = false;
+            // Start the procses.
+            Process p = Process.Start(si);
+            if (p != null)
+            {
+                //netsh advfirewall firewall delete rule name=rule name protocol=udp localport=500 
+                p.StandardInput.WriteLine(@"netsh advfirewall firewall delete rule name=" + netAddress.ServerName + " protocol=tcp  localport=" + netAddress.PcPort);
+                p.StandardInput.WriteLine(@"exit");
+                // Read all the output generated from it.
+                string output = p.StandardOutput.ReadToEnd();
+                // SaveData(output);
+                p.Close();
+            }
+            ShowData();
+        }
+
+        private void AddFirewallPermission(NetAddress netAddress)
+        {
+            ProcessStartInfo si = new ProcessStartInfo("cmd.exe");
+            // Redirect both streams so we can write/read them.
+            si.RedirectStandardInput = true;
+            si.RedirectStandardOutput = true;
+            si.UseShellExecute = false;
+            // Start the procses.
+            Process p = Process.Start(si);
+            if (p != null)
+            {
+                //netsh advfirewall firewall add rule name="test" dir=in action=allow enable=yes protocol=tcp localip=123123 localport=asdas remoteip=asdas remoteport=adsa
+                p.StandardInput.WriteLine(@"netsh advfirewall firewall add rule name="+netAddress.ServerName+" dir=in action=allow enable=yes protocol=tcp localip="+netAddress.PcAddress+" localport="+ netAddress.PcPort+" remoteip="+netAddress.ServerAddress+" remoteport="+netAddress.ServerPort);
+                p.StandardInput.WriteLine(@"exit");
+                // Read all the output generated from it.
+                string output = p.StandardOutput.ReadToEnd();
+               // SaveData(output);
+                p.Close();
+            }
+            ShowData();
         }
 
 
@@ -281,7 +369,7 @@ namespace NetworkWinApp
             }
             if (action == "add")
                 SaveToFile(netAddress);
-            else
+            else if (netAddress.Count>0)
             {
                 DeleteFromFile(netAddress, deletelist);
             }
@@ -304,7 +392,7 @@ namespace NetworkWinApp
                     }
                 }
             }
-
+            deleteList.Clear();
             SaveToFile(newList, "saveonly");
         }
 
@@ -333,7 +421,7 @@ namespace NetworkWinApp
 
         private void ReadFromFile(string old = null)
         {
-
+            //FileStatus();
             string currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string archiveFolder = Path.Combine(currentDirectory, "PortForward.txt");
             string[] data = File.ReadAllLines(archiveFolder);
@@ -378,19 +466,29 @@ namespace NetworkWinApp
                 dgt.Rows.Add();
 
                 string currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                string archiveFolder = Path.Combine(currentDirectory, "1.png");
-                // if ((int.Parse(alldata[row].FirewallPermission) > 0))
-                //  {
-                archiveFolder = Path.Combine(currentDirectory, "2.png");
-                // }
+                string archiveFolder;                            
+               
+                var serverName = (string)alldata[row].ServerName;
+                var isFirewallAllowed = checkFirewall(serverName);
+                
+                if (isFirewallAllowed > 1)
+                {
+                    archiveFolder = Path.Combine(currentDirectory, "red32.png");
+                    dgt.Rows[row].Cells["firewallPermission"].Tag = "no";
+                }
+                else
+                {
+                    archiveFolder = Path.Combine(currentDirectory, "green32.png");
+                    dgt.Rows[row].Cells["firewallPermission"].Tag = "yes";
+                }
+                
 
-
-                dgt.Rows[row].Cells["serverName"].Value = alldata[row].ServerName;
+                dgt.Rows[row].Cells["serverName"].Value = serverName;
                 dgt.Rows[row].Cells["accessType"].Value = alldata[row].AccessType;
                 dgt.Rows[row].Cells["pcAddress"].Value = alldata[row].PcAddress;
                 dgt.Rows[row].Cells["pcPort"].Value = alldata[row].PcPort;
-                dgt.Rows[row].Cells["firewallPermission"].Value = alldata[row].FirewallPermission;
-                //dgt.Rows[row].Cells["firewallPermission"].Value = Image.FromFile(archiveFolder);
+                //dgt.Rows[row].Cells["firewallPermission"].Value = alldata[row].FirewallPermission;
+                dgt.Rows[row].Cells["firewallPermission"].Value = Image.FromFile(archiveFolder);
                 dgt.Rows[row].Cells["serverAddress"].Value = alldata[row].ServerAddress;
                 dgt.Rows[row].Cells["serverPort"].Value = alldata[row].ServerPort;
 
@@ -420,6 +518,26 @@ namespace NetworkWinApp
 
         }
 
+        private int checkFirewall(string name)
+        {
+            //name = "test";
+            ProcessStartInfo si = new ProcessStartInfo("cmd.exe");
+            // Redirect both streams so we can write/read them.
+            si.RedirectStandardInput = true;
+            si.RedirectStandardOutput = true;
+            si.UseShellExecute = false;
+            // Start the procses.
+            Process p = Process.Start(si);
+           
+                p.StandardInput.WriteLine(@"netsh advfirewall firewall show rule name=" + name + " dir=in");
+                p.StandardInput.WriteLine(@"exit");
+                // Read all the output generated from it.
+                string output = p.StandardOutput.ReadToEnd();
+                int exist = output.IndexOf("No rules match the specified criteria", StringComparison.Ordinal);                                               
+                p.Close();
+                return exist;
+        }
+
         private void _add_Click(object sender, EventArgs e)
         {
             //rowCount++;
@@ -440,6 +558,8 @@ namespace NetworkWinApp
             // ReadFromFile();
             /* if (!_delete)
              {*/
+            FileStatus();
+            if (flag) _rowCount = 0;
            
             int count = 0;
             List<NetAddress> addList = new List<NetAddress>();
@@ -447,6 +567,7 @@ namespace NetworkWinApp
             {
                 NetAddress netAddress = new NetAddress();
                 count++;
+                
                 if (count > _rowCount)
                 {
 
@@ -463,34 +584,11 @@ namespace NetworkWinApp
 
             }
             NetshCommand(addList, "add");
-
             NetshCommand(deleteList, "delete");
-            deleteList.Clear();
-            
-            /*if (_delete){
-            List<NetAddress> deleteList = new List<NetAddress>();
-            int[] arr = _deleteIndex.ToArray();
-            foreach (DataGridViewRow row in dgt.Rows)
-            {
-                NetAddress netAddress = new NetAddress();
-                if (arr.Contains(row.Index))
-                {
-
-                    netAddress.PcAddress = (string) row.Cells[2].Value;
-                    netAddress.PcPort = (string) row.Cells[3].Value;
-                    deleteList.Add(netAddress);
-                }
-            }
-            NetshCommand(deleteList, "delete", arr);
-        }*/
-
-       
+            ShowData();
+  
         }
-
-        private void dgt_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
-        {
-            e.Row.Cells[4].Value = Resources.Image1;
-        }
+  
 
         private void btnCurrentIp_Click(object sender, EventArgs e)
         {
