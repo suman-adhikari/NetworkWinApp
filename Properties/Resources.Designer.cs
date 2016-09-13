@@ -61,6 +61,24 @@ namespace NetworkWinApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure to Add Firewall Permission ??.
+        /// </summary>
+        internal static string Form1_dataGridView1_CellClick_Are_you_sure_to_Add_Firewall_Permission___ {
+            get {
+                return ResourceManager.GetString("Form1_dataGridView1_CellClick_Are_you_sure_to_Add_Firewall_Permission___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firewall Permission!!.
+        /// </summary>
+        internal static string Form1_dataGridView1_CellClick_Firewall_Permission__ {
+            get {
+                return ResourceManager.GetString("Form1_dataGridView1_CellClick_Firewall_Permission__", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         internal static string Form1_SaveAddress_Action {

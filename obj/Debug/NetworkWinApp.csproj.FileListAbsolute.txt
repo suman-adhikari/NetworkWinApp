@@ -1,11 +1,14 @@
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\NetworkWinApp.exe
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\NetworkWinApp.pdb
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.dll
+D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.xml
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.Form1.resources
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.Properties.Resources.resources
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.csproj.GenerateResource.Cache
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.exe
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.pdb
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\obj\Debug\NetworkWinApp.csprojResolveAssemblyReference.cache
+<<<<<<< HEAD
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.dll
 D:\suman\test\Slave\NetworkWinApp\NetworkWinApp\bin\Debug\Newtonsoft.Json.xml
 C:\Users\aoe\Documents\Visual Studio 2013\Projects\NetworkWinApp\obj\Debug\NetworkWinApp.exe
@@ -17,3 +20,5 @@ C:\Users\aoe\Documents\Visual Studio 2013\Projects\NetworkWinApp\obj\Debug\Netwo
 C:\Users\aoe\Documents\Visual Studio 2013\Projects\NetworkWinApp\obj\Debug\NetworkWinApp.Form1.resources
 C:\Users\aoe\Documents\Visual Studio 2013\Projects\NetworkWinApp\obj\Debug\NetworkWinApp.Properties.Resources.resources
 C:\Users\aoe\Documents\Visual Studio 2013\Projects\NetworkWinApp\obj\Debug\NetworkWinApp.csproj.GenerateResource.Cache
+=======
+>>>>>>> df48e49a71e890ab99159d9d3cc5924884b40d76
