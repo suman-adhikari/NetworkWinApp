@@ -23,7 +23,7 @@ namespace NetworkWinApp
         private string _oldData;
         private bool _flag;
 
-        
+        //JUST FOR TEST
         
         public Form1()
         {            
@@ -456,7 +456,6 @@ namespace NetworkWinApp
             }
 
         }
-
 
 
         private void _add_Click(object sender, EventArgs e)
