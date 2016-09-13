@@ -24,7 +24,6 @@ namespace NetworkWinApp
         private bool _flag;
 
         //JUST FOR TEST1
-        // New test changes
         
         public Form1()
         {            
