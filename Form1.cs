@@ -23,7 +23,7 @@ namespace NetworkWinApp
         private string _oldData;
         private bool _flag;
 
-        //JUST FOR TEST
+        //JUST FOR TEST1
         
         public Form1()
         {            
